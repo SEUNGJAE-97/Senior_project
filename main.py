@@ -10,7 +10,7 @@ img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blurred_img = cv2.GaussianBlur(img, (5, 5), 0)
 
 # 캐니 엣지 검출, 모양을 검출한다.
-edges = cv2.Canny(blurred_img, 110, 200)
+edges = cv2.Canny(blurred_img, 100, 200)
 # th3 = cv2.adaptiveThreshold(edges, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,15,2)
 
 
