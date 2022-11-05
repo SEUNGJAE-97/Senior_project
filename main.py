@@ -1,4 +1,6 @@
 import cv2
+import Match_color
+import Match_shape
 
 # 파일을 흑백으로 불러온다.
 
