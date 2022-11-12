@@ -40,19 +40,15 @@ def match_color(img, contours):
     # 좌표에 해당하는 RGB 값 받아오기
     (b,g,r) = img[cx, cy]
     print("b: {0} , g : {1}, r : {2}".format(b,g,r))
+    
 
-    #for i in range(len(colorNames)):
-    #   colors[]
 
 # 목표 좌표와 얻은 좌표값 간의 거리를 반환한다.
 def dst(x,y):
     for i in range(0,len(x)):
-        a = abs(x[i]-y[i])
-        a = a **2
-        for j in range(0, len(y)):
-            totla += a
-    
-    return math.sqrt(a)
+        a = (abs(x[i]-y[i]))**2
+        total += a
+    return math.sqrt(total)
         
 
 
@@ -60,7 +56,7 @@ def dst(x,y):
 path = "drug2.jpg"
 image = cv2.imread("drug2.jpg", 1)
 contours = return_Contour(path)
-
+print(contours)
 
 
 
