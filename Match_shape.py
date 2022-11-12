@@ -1,37 +1,48 @@
 import cv2
 
-def match_shape(cnt1, cnt2, contours):
-    # 목표 도형에 컨투어를 얻고 컨투어를 따라 그려준다.
-    path = 'shape.jpg'
-    shape_contours, shape_hierarchy = return_Contour(path)
-
-    # 모든 좌표를 작은 원으로 표시
-    for contour in shape_contours:
-        size = len(contour)
-
-        # 전체 둘레의 0.05로 오차 범위 지정 --- ①
-        epsilon = 0.005 * cv2.arcLength(contour, True)
-
-        # 근사 컨투어 계산 --- ②
-        approx = cv2.approxPolyDP(contour, epsilon, True)
-        size = len(approx)
-        img = cv2.drawContours(img, [approx], -1, (0, 0, 255), 3)
-        cv2.line(img, tuple(approx[0][0]), tuple(approx[size - 1][0]), (0, 255, 0), 3)
-        
-        for k in range(size - 1):
-            cv2.line(img, tuple(approx[k][0]), tuple(approx[k + 1][0]), (0, 255, 0), 3)
-
+def find_contr(path, path2):
+    # 이미지 처리 
+    target= cv2.imread(path2)
+    shapes = cv2.imread(path)
+    shapesGray = cv2.cvtColor(shapes, cv2.COLOR_BGR2GRAY)
+    targetGray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
+    shapesTh = cv2.adaptiveThreshold(shapesGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C  , cv2.THRESH_BINARY, 11, 1)
+    targetTh = cv2.Canny(targetGray, 150, 250)
     
-        center, radius = cv2.minEnclosingCircle(contour)
+    # 모든 컨투어 찾기 
+    cntrs_shapes, hierarchy = cv2.findContours(shapesTh,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE) 
+    cntrs_target, hierarchy = cv2.findContours(targetTh,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+    
+    # 노이즈 제거 
+    saved_contour_shapes = []
+    matchs = []
+    thresh_low = 100
+    thresh_high = 1000
 
+    for contoured in cntrs_shapes:
+        if (cv2.contourArea(contoured) > thresh_low) & (cv2.contourArea(contoured) < thresh_high):
+            saved_contour_shapes.append(contoured)
     
-def return_Contour(img_path):
-    path = img_path
-    shape = cv2.imread(path)
-    gray = cv2.cvtColor(shape, cv2.COLOR_BGR2GRAY)    
+    """
+    # 제거 
+    for contour in cntrs_target:
+        if (cv2.contourArea(contour) > 50) :
+            saved_contour_target.append(contour)
+    """
     
-    contours, hierarchy = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+          
+    for contr in saved_contour_shapes:
+        match = cv2.matchShapes(cntrs_target[0], contr, cv2.CONTOURS_MATCH_I2, 0.0)
+        matchs.append((match,contr))
+        cv2.putText(shapes, '%.2f'%match, tuple(contr[0][0]), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255),1)
     
-    return contours, hierarchy
+    matchs.sort(key = lambda x : x[0])
+    cv2.drawContours(shapes, [matchs[0][1]], -1, (0,255,0), 3)
 
+    cv2.imshow("result", shapes)
+    cv2.waitKey(0)
+
+path2 = 'drug1.png'
+path = 'shape.jpg'
+find_contr(path, path2)
 

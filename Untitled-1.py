@@ -1,15 +1,6 @@
 import numpy as np
 import cv2
 import math
-def return_Contour(img_path):
-    path = img_path
-    shape = cv2.imread(path)
-    gray = cv2.cvtColor(shape, cv2.COLOR_BGR2GRAY)    
-    
-    contours, hierarchy = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
-    return contours, hierarchy
-
 def match_color(img, contours):
 
     # 인식할 색 입력
