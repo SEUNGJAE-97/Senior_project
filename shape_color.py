@@ -1,7 +1,6 @@
 import cv2
-import numpy as np
 import math 
-from scipy.spatial import distance as dist
+
 def find_contr(path, path2):
     # 이미지 처리 
     target= cv2.imread(path2)
