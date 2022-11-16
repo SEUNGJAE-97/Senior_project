@@ -24,6 +24,7 @@ def find_contr(path, path2):
         if (cv2.contourArea(contoured) > thresh_low) & (cv2.contourArea(contoured) < thresh_high):
             saved_contour_shapes.append(contoured)
     
+    
     """
     # 제거 
     for contour in cntrs_target:
@@ -34,7 +35,7 @@ def find_contr(path, path2):
     for contr in saved_contour_shapes:
         match = cv2.matchShapes(cntrs_target[0], contr, cv2.CONTOURS_MATCH_I2, 0.0)
         matchs.append((match,contr))
-        cv2.putText(shapes, '%.2f'%match, tuple(contr[0][0]), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255),1)
+        #cv2.putText(shapes, '%.2f'%match, tuple(contr[0][0]), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255),1)
     
     matchs.sort(key = lambda x : x[0])
     cv2.drawContours(shapes, [matchs[0][1]], -1, (0,255,0), 3)
