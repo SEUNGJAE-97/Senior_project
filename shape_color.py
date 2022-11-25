@@ -24,6 +24,7 @@ def find_contr(path, path2):
         if (cv2.contourArea(contoured) > thresh_low) & (cv2.contourArea(contoured) < thresh_high):
             saved_contour_shapes.append(contoured)
     
+    
     """
     # 제거 
     for contour in cntrs_target:
