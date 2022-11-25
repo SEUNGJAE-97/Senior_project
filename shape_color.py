@@ -34,16 +34,17 @@ def find_contr(path, path2):
     for contr in saved_contour_shapes:
         match = cv2.matchShapes(cntrs_target[0], contr, cv2.CONTOURS_MATCH_I2, 0.0)
         matchs.append((match,contr))
-        cv2.putText(shapes, '%.2f'%match, tuple(contr[0][0]), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255),1)
+        cv2.putText(shapes, '%.1f'%match, tuple(contr[0][0]), cv2.FONT_HERSHEY_PLAIN, 1, (0,0,255),1)
     
     matchs.sort(key = lambda x : x[0])
     cv2.drawContours(shapes, [matchs[0][1]], -1, (0,255,0), 3)
     cv2.imshow("result", shapes)
-    
+    """
     cx, cy = find_center(cntrs_target)
     center = (cx, cy)
     color = match_color(target, center)
     print(color)
+    """
     cv2.waitKey(0)
 
 
@@ -81,8 +82,8 @@ def find_center(contours):
     cy = int(M['m01']/M['m00'])
     return cx, cy
 
-
+"""
 path2 = 'drug1.png'
 path = 'shape.jpg'
 find_contr(path, path2)
-
+"""
