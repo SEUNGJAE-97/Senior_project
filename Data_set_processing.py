@@ -1,6 +1,5 @@
 import cv2
-from PIL import Image
-from PIL import ImageChops
+import matplotlib as plt
 import numpy as np
 def moment(image):
     contours = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -48,11 +47,12 @@ cnt = detected_contours[0]
 epsilon2 = 0.001*cv2.arcLength(cnt, True)
 approx2 = cv2.approxPolyDP(cnt, epsilon2, True)
 """
+# for-loop으로 앞, 뒤 사진 따로 저장할것.
 # cv2.drawContours(img, detected_contours, n ,(0,0,255), 5) 의 3번째 변수 n이 
 # 1일때 첫번째 객체 컨투어를 표시 , 0 일때 두번째 객체 컨투어를 그린다.
 
 
-
-cv2.drawContours(img, detected_contours, 0 ,(0,0,255), 5) 
-cv2.imshow('result', img)
+cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
+cv2.imshow('result', result)
 cv2.waitKey()
+
