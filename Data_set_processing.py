@@ -1,6 +1,7 @@
 import cv2
-import matplotlib as plt
-import numpy as np
+import os
+from imutils import contours
+
 def moment(image):
     contours = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     
@@ -16,14 +17,37 @@ def moment(image):
     cv2.imshow(image)
     return image
 
+# 폴더 생성 함수
+def create_folder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError:
+        print('Error : Creating directory. ' + directory)
 
+# 이미지 파일 이름을 불러오는 함수
+def get_img_name():
+    img_path_list= []
+    possible_img_extension = ['.jpg', '.jpeg', '.JPG', 'bmp', '.png']
+    root_dir = 'D:/data_set'
+    for (root, dirs, files) in os.walk(root_dir):
+        if len(files) > 0:
+            for file_name in files:
+                if os.path.splitext(file_name)[1] in possible_img_extension:
+                    img_path = root + '/' + file_name
+                    img_path = img_path.replace('\\', '/')
+                    img_path_list.append(img_path)
+    return img_path_list
 
+augmented_directory_path = "D:/data_set/Augmented_image"
+
+print(get_img_name())
 path = "200907150514801.JPG"
 path2 = "200907150521501.JPG"
-img = cv2.imread(path)
+img = cv2.imread(path2)
 shapesGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 shapesTh = cv2.threshold(shapesGray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
-
+# Remove horizontal lines
 horizontal_kernel  = cv2.getStructuringElement(cv2.MORPH_RECT, (10,3))
 detected_lines = cv2.morphologyEx(shapesTh, cv2.MORPH_OPEN, horizontal_kernel, iterations= 2)
 
@@ -42,31 +66,32 @@ for c in cnts:
 
 
 detected_contours,_ = cv2.findContours(result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
+#contour 확인
+#cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
 """
 cnt = detected_contours[0]
 epsilon2 = 0.001*cv2.arcLength(cnt, True)
 approx2 = cv2.approxPolyDP(cnt, epsilon2, True)
 """
-# for-loop으로 앞, 뒤 사진 따로 저장할것.
+# and 연산으로 앞, 뒤 사진 따로 저장한다.
 # cv2.drawContours(img, detected_contours, n ,(0,0,255), 5) 의 3번째 변수 n이 
 # 1일때 첫번째 객체 컨투어를 표시 , 0 일때 두번째 객체 컨투어를 그린다.
+
+(cnts, _) = contours.sort_contours(cnts, method="left-to-right")
+num = 0
 for c in cnts:
-    mask = np.zeros(detected_lines.shape, dtype="uint8")
-    cv2.drawContours(mask, [c], -1, 255, -1)
-  
-    # show the images
-    #cv2.imshow("Image", img)
-    #cv2.imshow("Mask", mask)
-    cv2.imshow("Image + Mask", cv2.bitwise_and(img, img, mask=mask))
-    cv2.waitKey(0)
+    x,y,w,h = cv2.boundingRect(c)
+    cv2.rectangle(img, (x, y), (x + w, y + h), (0,255,0), 1)
+    original = img.copy()
+    ROI = original[y:y+h, x:x+w]
+    #cv2.imwrite('ROI_{}.png'.format(num), ROI)
+    num += 1
+    
+    # while-loop  &  make folder   
+    
 
 
 
-
-
-#cv2.imshow('result', mask)
-#cv2.waitKey()
-
-
+cv2.imshow('image', img)
+cv2.waitKey()
 
