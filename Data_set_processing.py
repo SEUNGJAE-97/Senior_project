@@ -42,6 +42,7 @@ for c in cnts:
 
 
 detected_contours,_ = cv2.findContours(result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
 """
 cnt = detected_contours[0]
 epsilon2 = 0.001*cv2.arcLength(cnt, True)
@@ -50,9 +51,22 @@ approx2 = cv2.approxPolyDP(cnt, epsilon2, True)
 # for-loop으로 앞, 뒤 사진 따로 저장할것.
 # cv2.drawContours(img, detected_contours, n ,(0,0,255), 5) 의 3번째 변수 n이 
 # 1일때 첫번째 객체 컨투어를 표시 , 0 일때 두번째 객체 컨투어를 그린다.
+for c in cnts:
+    mask = np.zeros(detected_lines.shape, dtype="uint8")
+    cv2.drawContours(mask, [c], -1, 255, -1)
+  
+    # show the images
+    #cv2.imshow("Image", img)
+    #cv2.imshow("Mask", mask)
+    cv2.imshow("Image + Mask", cv2.bitwise_and(img, img, mask=mask))
+    cv2.waitKey(0)
 
 
-cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
-cv2.imshow('result', result)
-cv2.waitKey()
+
+
+
+#cv2.imshow('result', mask)
+#cv2.waitKey()
+
+
 
