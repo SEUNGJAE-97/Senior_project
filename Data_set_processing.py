@@ -17,31 +17,38 @@ def moment(image):
     cv2.imshow(image)
     return image
 
-# 폴더 생성 함수
-def create_folder(directory):
-    try:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-    except OSError:
-        print('Error : Creating directory. ' + directory)
-
 # 이미지 파일 이름을 불러오는 함수
 def get_img_name():
     img_path_list= []
+    img_name = []
+    # 해당 확장자를 갖는 파일에 대해서만 for-loop 적용
     possible_img_extension = ['.jpg', '.jpeg', '.JPG', 'bmp', '.png']
-    root_dir = 'D:/data_set'
+    root_dir = 'C:/Users/lenovo/Documents/GitHub/Senior_project/image'
     for (root, dirs, files) in os.walk(root_dir):
         if len(files) > 0:
             for file_name in files:
                 if os.path.splitext(file_name)[1] in possible_img_extension:
-                    img_path = root + '/' + file_name
+                    # 이미지를 저장할 경로 값을 갖는 img_path 
+                    img_path = root + '/' + 'my_image'+'/'+file_name
                     img_path = img_path.replace('\\', '/')
+                    # 이미지의 저장 경로 및 이름 값을 갖는 리스트(img_name) 
                     img_path_list.append(img_path)
-    return img_path_list
+                    img_name.append(file_name)
+    return img_path_list, img_name 
+# directory(생성할 약품의 이름값으로 생성)
+def create_folder():
+    img_path_list, img_name = get_img_name()
+    for file in range(len(img_name)):
+        path = img_path_list[file] + '/' + img_name[file]
+        try : 
+            if not os.path.exists(path): 
+                #os.makedirs(path)
+                print(path, sep='\n')
+        except OSError:
+            print("Error in directory ")
+    
 
-augmented_directory_path = "D:/data_set/Augmented_image"
-
-print(get_img_name())
+create_folder()
 path = "200907150514801.JPG"
 path2 = "200907150521501.JPG"
 img = cv2.imread(path2)
