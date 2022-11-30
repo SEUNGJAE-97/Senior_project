@@ -25,7 +25,7 @@ def get_img_name():
     img_name = []
     # 해당 확장자를 갖는 파일에 대해서만 for-loop 적용
     possible_img_extension = ['.jpg', '.jpeg', '.JPG', 'bmp', '.png']
-    root_dir = 'data_set/'
+    root_dir = 'image/'
     for (root, dirs, files) in os.walk(root_dir):
         if len(files) > 0:
             for file_name in files:
@@ -51,53 +51,57 @@ def create_folder():
             print("Error in directory ")
     
 def main():
+    #create_folder()
     img_path , names = get_img_name()
-    for i in range(len(names)):
-        path = 'data_set'
-        name = names[i]
-        full_path = path + '/' + name +'.jpg'
-        img_array = np.fromfile(full_path, np.uint8)
-        img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-        shapesGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        shapesTh = cv2.threshold(shapesGray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
-        # Remove horizontal lines
-        horizontal_kernel  = cv2.getStructuringElement(cv2.MORPH_RECT, (10,3))
-        detected_lines = cv2.morphologyEx(shapesTh, cv2.MORPH_OPEN, horizontal_kernel, iterations= 2)
+    try :
+        for i in range(len(names)):
+            name = 'image/' + str(names[i])
+            img = cv2.imread(name)
+            shapesGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            shapesTh = cv2.threshold(shapesGray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+            # Remove horizontal lines
+            horizontal_kernel  = cv2.getStructuringElement(cv2.MORPH_RECT, (10,3))
+            detected_lines = cv2.morphologyEx(shapesTh, cv2.MORPH_OPEN, horizontal_kernel, iterations= 2)
 
-        cntrs_shapes = cv2.findContours(detected_lines,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-        cntrs_shapes = cntrs_shapes[0] if len(cntrs_shapes) == 2 else cntrs_shapes[1]
-        for c in cntrs_shapes:
-            cv2.drawContours(detected_lines, [c], -1, (255,255,255), 5)
+            cntrs_shapes = cv2.findContours(detected_lines,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+            cntrs_shapes = cntrs_shapes[0] if len(cntrs_shapes) == 2 else cntrs_shapes[1]
+            for c in cntrs_shapes:
+                cv2.drawContours(detected_lines, [c], -1, (255,255,255), 5)
 
-        # Remove vertical lines
-        vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,10))
-        remove_vertical = cv2.morphologyEx(shapesTh, cv2.MORPH_OPEN, vertical_kernel, iterations=2)
-        cnts = cv2.findContours(remove_vertical, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-        for c in cnts:
-            result = cv2.drawContours(detected_lines , [c], -1, (255,255,255), 5)
+            # Remove vertical lines
+            vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,10))
+            remove_vertical = cv2.morphologyEx(shapesTh, cv2.MORPH_OPEN, vertical_kernel, iterations=2)
+            cnts = cv2.findContours(remove_vertical, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+            for c in cnts:
+                result = cv2.drawContours(detected_lines , [c], -1, (255,255,255), 5)
 
 
-        detected_contours,_ = cv2.findContours(result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-        #contour 확인
-        cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
-        """
-        cnt = detected_contours[0]
-        epsilon2 = 0.001*cv2.arcLength(cnt, True)
-        approx2 = cv2.approxPolyDP(cnt, epsilon2, True)
-        """
-        # and 연산으로 앞, 뒤 사진 따로 저장한다.
-        # cv2.drawContours(img, detected_contours, n ,(0,0,255), 5) 의 3번째 변수 n이 
-        # 1일때 첫번째 객체 컨투어를 표시 , 0 일때 두번째 객체 컨투어를 그린다.
-        (cnts, _) = contours.sort_contours(cnts, method="left-to-right")
+            detected_contours,_ = cv2.findContours(result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+            #contour 확인
+            #cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
+            """
+            cnt = detected_contours[0]
+            epsilon2 = 0.001*cv2.arcLength(cnt, True)
+            approx2 = cv2.approxPolyDP(cnt, epsilon2, True)
+            """
+            # and 연산으로 앞, 뒤 사진 따로 저장한다.
+            # cv2.drawContours(img, detected_contours, n ,(0,0,255), 5) 의 3번째 변수 n이 
+            # 1일때 첫번째 객체 컨투어를 표시 , 0 일때 두번째 객체 컨투어를 그린다.
+            #(cnts, _) = contours.sort_contours(cnts, method="left-to-right")
        
-        for c in cnts:
-            x,y,w,h = cv2.boundingRect(c)
-            #cv2.rectangle(img, (x, y), (x + w, y + h), (255,255,255), 1)
-            original = img.copy()
-            ROI = original[y:y+h, x:x+w]
-            #path = 'data_set/Augmented_image/'+ name + '/' + name + '.jpg'
-            #cv2.imwrite(path, ROI)
+            for c in cnts:
+                x,y,w,h = cv2.boundingRect(c)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255,255,255), 1)
+                original = img.copy()
+                ROI = original[y:y+h, x:x+w]
+                myname = list(names[i])
+                path = 'image/augmented_image/'+ ''.join(myname[:9]) + '/'+ names[i]
+                cv2.imwrite(path,ROI)
+                cv2.waitKey()
+    except Exception as e:
+        print(e)
+
 
 
 if __name__ == "__main__":

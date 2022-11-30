@@ -5,7 +5,7 @@ import time
 import urllib.request
 import ast
 image_set = "D:\image_set"
-file = pd.read_csv('abc.csv', sep=',', encoding='cp949')
+file = pd.read_csv('file.csv', sep=',', encoding='cp949')
 
 
 names = []
@@ -19,25 +19,19 @@ for i in range(len(file.index)):
             url.append(file.iloc[i][j])
 
 
+
+
 total_percent = 0
 error_cnt = 0
 for n in range(len(names)):
     try :
+        
         file_path = "D:/image_set/"
-        line = list(names[n])
-        for k in range(len(line)):
-            if line[k] == '/' :
-                line[k] = ','
-            
-        names[n] = line
-        name = ''.join(names[n])+ '.jpg'
-        path = file_path+name
-    
+        path = file_path+str(names[n])+'.png'
+        
         url_link = ''.join(url[n])
     
-    
         urllib.request.urlretrieve(url_link, path)
-        time.sleep(1)
         os.system('cls')
         total_percent += 0.004
         print("Percent : {0:.2f} %".format(total_percent))
@@ -45,8 +39,3 @@ for n in range(len(names)):
         error_cnt +=1
         os.system('cls')
         print("{}개의 이미지 소실".format(error_cnt))
-        
-
-    
-    
-    
