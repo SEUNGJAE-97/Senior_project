@@ -39,19 +39,20 @@ def get_img_name():
 def create_folder():
     img_path_list, img_name = get_img_name()
     for file in range(len(img_name)):
-        path = img_path_list[file] + '/' + img_name[file]
+        path = img_path_list[file] #+ '/' + img_name[file]
         try : 
             if not os.path.exists(path): 
-                #os.makedirs(path)
-                print(path, sep='\n')
+                os.makedirs(path)
+                print(path)
         except OSError:
             print("Error in directory ")
     
 
-create_folder()
+
 path = "200907150514801.JPG"
 path2 = "200907150521501.JPG"
-img = cv2.imread(path2)
+create_folder()
+img = cv2.imread(path)
 shapesGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 shapesTh = cv2.threshold(shapesGray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
 # Remove horizontal lines
@@ -96,8 +97,6 @@ for c in cnts:
     
     # while-loop  &  make folder   
     
-
-
 
 cv2.imshow('image', img)
 cv2.waitKey()
