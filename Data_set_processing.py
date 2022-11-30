@@ -58,8 +58,6 @@ def main():
         full_path = path + '/' + name +'.jpg'
         img_array = np.fromfile(full_path, np.uint8)
         img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-        print(img_path[i])
-        print(names[i])
         shapesGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         shapesTh = cv2.threshold(shapesGray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
         # Remove horizontal lines
@@ -82,7 +80,7 @@ def main():
 
         detected_contours,_ = cv2.findContours(result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         #contour 확인
-        #cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
+        cv2.drawContours(img, detected_contours, -1 ,(0,0,255), 5) 
         """
         cnt = detected_contours[0]
         epsilon2 = 0.001*cv2.arcLength(cnt, True)
@@ -91,18 +89,15 @@ def main():
         # and 연산으로 앞, 뒤 사진 따로 저장한다.
         # cv2.drawContours(img, detected_contours, n ,(0,0,255), 5) 의 3번째 변수 n이 
         # 1일때 첫번째 객체 컨투어를 표시 , 0 일때 두번째 객체 컨투어를 그린다.
-
         (cnts, _) = contours.sort_contours(cnts, method="left-to-right")
-        num = 0
+       
         for c in cnts:
             x,y,w,h = cv2.boundingRect(c)
             #cv2.rectangle(img, (x, y), (x + w, y + h), (255,255,255), 1)
             original = img.copy()
             ROI = original[y:y+h, x:x+w]
-            path = 'data_set/Augmented_image/'+ name + '/' + name + '.jpg'
-            print(path)
-            cv2.imwrite(path, ROI)
-            num += 1
+            #path = 'data_set/Augmented_image/'+ name + '/' + name + '.jpg'
+            #cv2.imwrite(path, ROI)
 
 if __name__ == "__main__":
     main()
