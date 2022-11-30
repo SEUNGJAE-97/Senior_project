@@ -30,7 +30,7 @@ def get_img_name():
         if len(files) > 0:
             for file_name in files:
                 if os.path.splitext(file_name)[1] in possible_img_extension:
-                    file_name = file_name.replace('.jpg', '')
+                    file_name = file_name.replace('.png', '')
                     # 이미지를 저장할 경로 값을 갖는 img_path 
                     img_path = root + 'Augmented_image'+'/'+file_name
                     img_path = img_path.replace('\\', '/')
@@ -55,8 +55,8 @@ def main():
     img_path , names = get_img_name()
     try :
         for i in range(len(names)):
-            name = 'image/' + str(names[i])
-            img = cv2.imread(name)
+            name = 'image/' + str(names[i]) + '.png'
+            img = cv2.imread(name, cv2.IMREAD_UNCHANGED)
             shapesGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             shapesTh = cv2.threshold(shapesGray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
             # Remove horizontal lines
@@ -89,16 +89,16 @@ def main():
             # cv2.drawContours(img, detected_contours, n ,(0,0,255), 5) 의 3번째 변수 n이 
             # 1일때 첫번째 객체 컨투어를 표시 , 0 일때 두번째 객체 컨투어를 그린다.
             #(cnts, _) = contours.sort_contours(cnts, method="left-to-right")
-       
+            num = 0
             for c in cnts:
                 x,y,w,h = cv2.boundingRect(c)
-                cv2.rectangle(img, (x, y), (x + w, y + h), (255,255,255), 1)
+                #cv2.rectangle(img, (x, y), (x + w, y + h), (255,255,255), 1)
                 original = img.copy()
                 ROI = original[y:y+h, x:x+w]
                 myname = list(names[i])
-                path = 'image/augmented_image/'+ ''.join(myname[:9]) + '/'+ names[i]
+                path = 'image/augmented_image/{}/{}_{}.png'.format(''.join(myname[:9]), names[i], num)
                 cv2.imwrite(path,ROI)
-                cv2.waitKey()
+                num+=1
     except Exception as e:
         print(e)
 
