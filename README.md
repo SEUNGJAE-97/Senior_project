@@ -1,6 +1,13 @@
 # :pushpin: Keras 모델을 적용한 알약 판별 어플
 
-## 데이터 전처리
+## 🖥️ 프로젝트 소개
+딥러닝을 위한 데이터 셋 생성과 어플리케이션과의 통신을 위한 서버 생성 
+<br>
+
+## 🕰️ 개발 기간
+2023.02 ~ 2023.06
+
+## 🖼️데이터 전처리
 
 ### Get_img.py 
 ![11](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/17500b43-624c-428d-a8cd-b8426c1fd7fb)
@@ -19,7 +26,7 @@
 
    - Data_set_processing.py에서 얻은 데이터에 Albumentations 라이브러리를 활용하여 데이터 증강을 한다. 
  
-## 서버
+## 🖥️서버
 ### server.py
    - 멀티 프로세스를 활용하여 최대 10명의 동시접속을 지원한다.
    
@@ -28,7 +35,7 @@
 ### keras_example.ipynb
 
   ### 첫번째 결과
-  ![화면 캡처 2023-05-31 033955](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/93f1d7b9-6e64-46c1-b037-c8a9a11b18f6)
+  <img src = "https://github.com/SEUNGJAE-97/Alyak_Application/assets/117517535/a1429c78-6866-46f7-9d45-fbc3af07ece7" width = "600" height = "400"/>
   
   - 아무런 문양이 없는 이미지에 대해서도 학습을 진행하였다.
   
@@ -36,7 +43,7 @@
   #### 문제점 
   - 너무 과하거나 의미없는 데이터가 늘어났고, 결과적으로 과적합(Overfitting)이라는 문제가 발생하였다.
  ### 두번째 결과
- ![output](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/fb15a3f6-9d7c-442b-8580-403a50bc597a)
+  <img src = "https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/fb15a3f6-9d7c-442b-8580-403a50bc597a" width = "600" height = "400"/>
  
   - 첫번째에 사용한 학습 데이터에서 앞이나 뒤에 아무런 문양이나 문자가 없는 경우를 제외하였다.
   
@@ -46,8 +53,9 @@
   #### 문제점 
   - 대략 98%의 정확도를 보였지만, 일정 epoch를 넘어서는 순간 급격하게 정확도가 떨어졌다. 
  ### 세번째 결과 
- ![output2](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/af84a319-8070-4121-ac8d-f2dce6cf45c5)
- ![11](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/1143c98e-81ee-4a15-8120-3f28d492f595)
+  <img src = "https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/af84a319-8070-4121-ac8d-f2dce6cf45c5" width = "600" height = "400"/>
+  
+ <img src = "https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/1143c98e-81ee-4a15-8120-3f28d492f595" width = "600" height = "400"/>
  
    - 급격하게 정확도가 떨어지기전에 조기멈춤 규제기법(Early Stopping)을 사용하였다.
     
