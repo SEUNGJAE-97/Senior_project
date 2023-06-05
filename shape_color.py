@@ -5,10 +5,14 @@ def find_contr(path, path2):
     # 이미지 처리 
     target= cv2.imread(path2)
     shapes = cv2.imread(path)
+
+    target = cv2.resize(target, dsize=(500,500), interpolation=cv2.INTER_LANCZOS4)
+
     shapesGray = cv2.cvtColor(shapes, cv2.COLOR_BGR2GRAY)
     targetGray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
     shapesTh = cv2.adaptiveThreshold(shapesGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C  , cv2.THRESH_BINARY, 11, 1)
     targetTh = cv2.Canny(targetGray, 150, 250)
+    cv2.imshow('target',targetTh)
     
     # 모든 컨투어 찾기 
     cntrs_shapes, hierarchy = cv2.findContours(shapesTh,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE) 
@@ -83,8 +87,10 @@ def find_center(contours):
     cy = int(M['m01']/M['m00'])
     return cx, cy
 
-"""
-path2 = 'drug1.png'
-path = 'shape.jpg'
-find_contr(path, path2)
-"""
+if __name__ == '__main__':
+    path2 = "E:\image\image.jpg"
+    path = 'shape.jpg'
+    find_contr(path, path2)
+    
+
+
