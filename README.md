@@ -44,9 +44,11 @@
   - 대략 98%의 정확도를 보였지만, 일정 epoch를 넘어서는 순간 급격하게 정확도가 떨어졌다. 
  # 세번째 결과 
  ![output2](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/af84a319-8070-4121-ac8d-f2dce6cf45c5)
+ ![11](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/1143c98e-81ee-4a15-8120-3f28d492f595)
  
-   - 급격하게 정확도가 떨어지기전에 조기멈춤 규제기법(Early Stopping)을 사용하였다. 
-   - 
+   - 급격하게 정확도가 떨어지기전에 조기멈춤 규제기법(Early Stopping)을 사용하였다.
+    
+   - 학습 데이터셋에 대해서는 98%, 검증 데이터셋에 대해서는 94%의 정확도를 가졌다. 
   
   
    
