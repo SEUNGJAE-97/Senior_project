@@ -1,7 +1,7 @@
 ### Keras 모델을 적용한 알약 판별 어플
 
 ## Get_img.py 
-    <img src="https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/17500b43-624c-428d-a8cd-b8426c1fd7fb">
+![11](https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/17500b43-624c-428d-a8cd-b8426c1fd7fb)
     
    - 이미지를 다운 받을 수 있는 URL로부터 데이터를 수집한다.
    
