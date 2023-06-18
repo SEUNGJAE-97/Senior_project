@@ -65,6 +65,7 @@
  #### 4. 마지막 결과
  ##### 4.1 데이터 셋 수정 
  <img src = "https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/071578b7-dfd8-46df-9d07-623350afb913"  width = "600" height = "400"/>
+
 - 기존 이미지 (500*500)에 대하여 400*400 사이즈로 랜덤하게 Crob 하는 방식을 추가하였다.
  ##### 4.2 학습 과정 그래프 
  <img src = "https://github.com/SEUNGJAE-97/Senior_project/assets/117517535/59db5f13-172d-42c8-9a3a-9e190046f246" width = "600" height = "400"/>
